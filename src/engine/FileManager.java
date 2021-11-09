@@ -4,12 +4,12 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -70,8 +70,7 @@ public final class FileManager {
 		InputStream inputStream = null;
 
 		try {
-			inputStream = DrawManager.class.getClassLoader()
-					.getResourceAsStream("graphics");
+			inputStream = DrawManager.class.getResourceAsStream("graphics");
 			char c;
 
 			// Sprite loading.
@@ -117,7 +116,7 @@ public final class FileManager {
 		try {
 			// Font loading.
 			inputStream = FileManager.class.getClassLoader()
-					.getResourceAsStream("font.ttf");
+					.getResourceAsStream("engine/font.ttf");
 			font = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(
 					size);
 		} finally {
