@@ -159,7 +159,7 @@ public final class DrawManager {
 		if (!(screen instanceof HighScoreScreen ||
 				screen instanceof ScoreScreen)) {
 			Particles particles = new Particles();
-			for (int i = 0; i <= 15; i++) {
+			for (int i = 0; i <= 120; i++) {
 				particles.add(new Particle(this, screen));
 			}
 			particles.draw(backBufferGraphics);
