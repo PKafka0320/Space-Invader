@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import screen.Screen;
+import screen.*;
 import entity.Entity;
 import entity.Ship;
 
@@ -156,6 +156,14 @@ public final class DrawManager {
 		backBufferGraphics
 				.fillRect(0, 0, screen.getWidth(), screen.getHeight());
 
+		if (!(screen instanceof HighScoreScreen ||
+				screen instanceof ScoreScreen)) {
+			Particles particles = new Particles();
+			for (int i = 0; i <= 15; i++) {
+				particles.add(new Particle(this, screen));
+			}
+			particles.draw(backBufferGraphics);
+		}
 
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
@@ -559,5 +567,9 @@ public final class DrawManager {
 		else
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
+	}
+
+	public BufferedImage getBackBuffer() {
+		return backBuffer;
 	}
 }
