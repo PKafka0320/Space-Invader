@@ -47,6 +47,10 @@ public final class InputManager implements KeyListener {
 		return keys[keyCode];
 	}
 
+	public boolean isKeyUp(final int keyCode) {
+		return !keys[keyCode];
+	}
+
 	/**
 	 * Changes the state of the key to pressed.
 	 * 
@@ -58,6 +62,7 @@ public final class InputManager implements KeyListener {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = true;
 	}
+
 
 	/**
 	 * Changes the state of the key to not pressed.

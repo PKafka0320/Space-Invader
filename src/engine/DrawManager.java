@@ -1,5 +1,7 @@
 package engine;
 
+import screen.GameScreen;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -11,7 +13,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.swing.*;
+import java.awt.*;
 
+import screen.GameScreen;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
@@ -119,7 +124,7 @@ public final class DrawManager {
 
 	/**
 	 * Returns shared instance of DrawManager.
-	 * 
+	 *
 	 * @return Shared instance of DrawManager.
 	 */
 	protected static DrawManager getInstance() {
@@ -130,7 +135,7 @@ public final class DrawManager {
 
 	/**
 	 * Sets the frame to draw the image on.
-	 * 
+	 *
 	 * @param currentFrame
 	 *            Frame to draw on.
 	 */
@@ -141,7 +146,7 @@ public final class DrawManager {
 	/**
 	 * First part of the drawing process. Initialices buffers, draws the
 	 * background and prepares the images.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw in.
 	 */
@@ -166,7 +171,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws the completed drawing on screen.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 */
@@ -177,7 +182,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws an entity, using the apropiate image.
-	 * 
+	 *
 	 * @param entity
 	 *            Entity to be drawn.
 	 * @param positionX
@@ -199,7 +204,7 @@ public final class DrawManager {
 
 	/**
 	 * For debugging purpouses, draws the canvas borders.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw in.
 	 */
@@ -216,7 +221,7 @@ public final class DrawManager {
 
 	/**
 	 * For debugging purpouses, draws a grid over the canvas.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw in.
 	 */
@@ -231,7 +236,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws current score on screen.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param score
@@ -242,11 +247,26 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		String scoreString = String.format("%04d", score);
 		backBufferGraphics.drawString(scoreString, screen.getWidth() - 60, 25);
+
+
+
+	}
+
+	/**
+	 * Draws Config Image
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param config
+	 *            Config image.
+	 */
+	public void drawConfig(final Screen screen, final BufferedImage config) {
+		backBufferGraphics.drawImage(config, screen.getWidth() - 100, 7, 25, 25, null);
 	}
 
 	/**
 	 * Draws number of remaining lives on screen.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param lives
@@ -263,7 +283,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws a thick line from side to side of the screen.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param positionY
@@ -278,7 +298,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws game title.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 */
@@ -297,7 +317,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws main menu.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param option
@@ -307,6 +327,8 @@ public final class DrawManager {
 		String playString = "Play";
 		String highScoresString = "High scores";
 		String exitString = "exit";
+		//ImageIcon img = new ImageIcon("engine/config.png");
+		//JLabel imageLabel = new JLabel(img);
 
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
@@ -330,7 +352,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws game results.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param score
@@ -370,7 +392,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws interactive characters for name input.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param name
@@ -419,7 +441,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws basic content of game over screen.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param acceptsInput
@@ -449,7 +471,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws high score screen title and instructions.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 */
@@ -467,7 +489,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws high scores.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param highScores
@@ -490,7 +512,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws a centered string on regular font.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param string
@@ -507,7 +529,7 @@ public final class DrawManager {
 
 	/**
 	 * Draws a centered string on big font.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param string
@@ -522,9 +544,39 @@ public final class DrawManager {
 				- fontBigMetrics.stringWidth(string) / 2, height);
 	}
 
+	public void drawConfigScreen(final Screen screen, final int width, final int sound, final int bright, final int option){
+		int i_sound,i_bright;
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setFont(fontBig);
+		backBufferGraphics.drawString("Config",screen.getWidth()/3,screen.getHeight()/6);
+
+		if (option == 0) {
+			backBufferGraphics.setColor(Color.GREEN);
+			backBufferGraphics.drawString("sound",120,250);
+			i_sound = GameScreen.sound;
+			backBufferGraphics.drawString(""+i_sound,200,250);
+
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString("bright",120,290);
+			i_bright = GameScreen.bright;
+			backBufferGraphics.drawString(""+i_bright,200,290);
+		}
+		else if (option == 1) {
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString("sound",120,250);
+			i_sound = GameScreen.sound;
+			backBufferGraphics.drawString(""+i_sound,200,250);
+
+			backBufferGraphics.setColor(Color.GREEN);
+			backBufferGraphics.drawString("bright",120,290);
+			i_bright = GameScreen.bright;
+			backBufferGraphics.drawString(""+i_bright,200,290);
+		}
+	}
+
 	/**
 	 * Countdown to game start.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param level

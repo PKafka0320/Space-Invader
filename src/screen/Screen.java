@@ -1,8 +1,16 @@
 package screen;
 
 import java.awt.Insets;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 import engine.Cooldown;
 import engine.Core;
@@ -15,7 +23,7 @@ import engine.InputManager;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  * 
  */
-public class Screen {
+public class Screen extends JFrame{
 	
 	/** Milliseconds until the screen accepts user input. */
 	private static final int INPUT_DELAY = 1000;
@@ -37,7 +45,6 @@ public class Screen {
 	protected Insets insets;
 	/** Time until the screen accepts user input. */
 	protected Cooldown inputDelay;
-
 	/** If the screen is running. */
 	protected boolean isRunning;
 	/** What kind of screen goes next. */
@@ -45,7 +52,7 @@ public class Screen {
 
 	/**
 	 * Constructor, establishes the properties of the screen.
-	 * 
+	 *
 	 * @param width
 	 *            Screen width.
 	 * @param height
@@ -64,7 +71,12 @@ public class Screen {
 		this.inputDelay = Core.getCooldown(INPUT_DELAY);
 		this.inputDelay.reset();
 		this.returnCode = 0;
+
+
+
+
 	}
+
 
 	/**
 	 * Initializes basic screen properties.

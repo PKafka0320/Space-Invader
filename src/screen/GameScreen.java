@@ -1,9 +1,13 @@
 package screen;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-
 import engine.Cooldown;
 import engine.Core;
 import engine.GameSettings;
@@ -21,8 +25,7 @@ import entity.Ship;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  * 
  */
-public class GameScreen extends Screen {
-
+public class GameScreen extends Screen{
 	/** Milliseconds until the screen accepts user input. */
 	private static final int INPUT_DELAY = 6000;
 	/** Bonus score for each life remaining at the end of the level. */
@@ -71,6 +74,25 @@ public class GameScreen extends Screen {
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
 
+	private static BufferedImage config;
+	private static Image resizeImage;
+	private static Image image;
+	private boolean pausebutton = false;
+
+	private boolean paused = false;
+	private static Thread game_thread;
+	private static Thread paused_thread;
+
+	private static int pause_width = 300;
+	private static int pause_height = 420;
+
+	public static int bright = 50;
+	public static int sound = 50;
+
+	private boolean isBtnDown = false;
+	private static int selectedConfig = 0;
+
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 * 
@@ -78,7 +100,7 @@ public class GameScreen extends Screen {
 	 *            Current game state.
 	 * @param gameSettings
 	 *            Current game settings.
-	 * @param bonnusLife
+	 * @param bonusLife
 	 *            Checks if a bonus life is awarded this level.
 	 * @param width
 	 *            Screen width.
@@ -92,11 +114,20 @@ public class GameScreen extends Screen {
 			final int width, final int height, final int fps) {
 		super(width, height, fps);
 
-		this.gameSettings = gameSettings;
+//		game_thread = new MainScreen(gameState, gameSettings,bonusLife,width,height,fps);
+
 		this.bonusLife = bonusLife;
+		this.gameSettings = gameSettings;
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
 		this.lives = gameState.getLivesRemaining();
+
+		File file = new File("src/engine/config.png");
+		try{
+			this.config = ImageIO.read(file);
+		}
+		catch(Exception e) {}
+
 		if (this.bonusLife)
 			this.lives++;
 		this.bulletsShot = gameState.getBulletsShot();
@@ -150,6 +181,7 @@ public class GameScreen extends Screen {
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
 			if (!this.ship.isDestroyed()) {
+
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT)
 						|| inputManager.isKeyDown(KeyEvent.VK_D);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT)
@@ -160,13 +192,50 @@ public class GameScreen extends Screen {
 				boolean isLeftBorder = this.ship.getPositionX()
 						- this.ship.getSpeed() < 1;
 
-				if (moveRight && !isRightBorder) {
+				if (!pausebutton && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+					pausebutton = true;
+					if (!paused) {
+						paused = true;
+						gamepaused();
+					} else {
+						paused = false;
+						gamestart();
+					}
+				}
+				if (pausebutton && inputManager.isKeyUp(KeyEvent.VK_ESCAPE)) {
+					pausebutton = false;
+				}
+
+				if(!isBtnDown && paused){
+					if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
+						isBtnDown = true;
+						previousMenuItem();
+					}
+					if (inputManager.isKeyDown(KeyEvent.VK_DOWN)) {
+						isBtnDown = true;
+						nextMenuItem();
+					}
+					if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+						isBtnDown = true;
+						valueDown();
+					}
+					if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+						isBtnDown = true;
+						valueUp();
+					}
+					if (inputManager.isKeyUp(KeyEvent.VK_UP) || inputManager.isKeyUp(KeyEvent.VK_DOWN)
+							|| inputManager.isKeyUp(KeyEvent.VK_LEFT) || inputManager.isKeyUp(KeyEvent.VK_RIGHT)) {
+						isBtnDown = false;
+					}
+				}
+
+				if (moveRight && !isRightBorder && !paused) {
 					this.ship.moveRight();
 				}
-				if (moveLeft && !isLeftBorder) {
+				if (moveLeft && !isLeftBorder && !paused) {
 					this.ship.moveLeft();
 				}
-				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
+				if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !paused)
 					if (this.ship.shoot(this.bullets))
 						this.bulletsShot++;
 			}
@@ -190,14 +259,21 @@ public class GameScreen extends Screen {
 				this.logger.info("The special ship has escaped");
 			}
 
-			this.ship.update();
-			this.enemyShipFormation.update();
-			this.enemyShipFormation.shoot(this.bullets);
+			if (!paused) {
+				this.ship.update();
+				this.enemyShipFormation.update();
+				this.enemyShipFormation.shoot(this.bullets);
+			}
 		}
 
-		manageCollisions();
-		cleanBullets();
-		draw();
+		if (!paused){
+			manageCollisions();
+			cleanBullets();
+			draw();
+		}
+		else{
+			drawConfig();
+		}
 
 		if ((this.enemyShipFormation.isEmpty() || this.lives == 0)
 				&& !this.levelFinished) {
@@ -208,6 +284,63 @@ public class GameScreen extends Screen {
 		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
 			this.isRunning = false;
 
+	}
+
+	public void previousMenuItem() {
+		if (selectedConfig == 0) {
+			selectedConfig = 1;
+		}
+		else if (selectedConfig == 1){
+			selectedConfig = 0;
+		}
+	}
+
+	public void nextMenuItem() {
+		if (selectedConfig == 1) {
+			selectedConfig = 0;
+		}
+		else if (selectedConfig == 0) {
+			selectedConfig = 1;
+		}
+	}
+
+	public void valueUp() {
+		if (selectedConfig == 0) {
+			if (sound >= 0 && sound <= 95) {
+				sound += 5;
+			}
+		}
+		else if (selectedConfig == 1) {
+			if (bright >= 0 && bright <= 95) {
+				bright += 5;
+			}
+		}
+	}
+
+	public void valueDown() {
+		if (selectedConfig == 0) {
+			if (sound >= 5 && sound <= 100) {
+				if(sound == 0) {
+					sound -= 0;
+				}
+				else {
+					sound -= 5;
+				}
+
+			}
+
+		}
+		else if (selectedConfig == 1) {
+			if (bright >= 5 && bright <= 100) {
+				if(bright == 0) {
+					bright -= 0;
+				}
+				else {
+					bright-= 5;
+				}
+
+			}
+		}
 	}
 
 	/**
@@ -233,6 +366,8 @@ public class GameScreen extends Screen {
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
+		drawManager.drawConfig(this, this.config);
+
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
@@ -248,6 +383,56 @@ public class GameScreen extends Screen {
 		}
 
 		drawManager.completeDrawing(this);
+	}
+
+	private void drawConfig() {
+		drawManager.initDrawing(this);
+		drawManager.drawConfigScreen(this,width-100, sound, bright, selectedConfig);
+		drawManager.completeDrawing(this);
+	}
+
+	private void gamepaused() {
+		System.out.println("paused");
+
+		//코어에 함수를 불러오는 거야
+//
+//		JFrame configFrame = new JFrame();
+//		JPanel pause = new JPanel();
+//		JSlider sound = new JSlider();
+//		JSlider bright = new JSlider();
+//		JButton restartBtn = new JButton("restart");
+//		JButton tempBtn = new JButton("temporary");
+//		JLabel vol = new JLabel("vol");
+//		JLabel tone = new JLabel("ton");
+//		setVisible(true);
+//		pause.setLayout(null);
+//
+//		restartBtn.setBounds(pause_width/4,150,150,50);
+//		tempBtn.setBounds(pause_width/4,100,150,50);
+//
+//		sound.setBounds(pause_width/4,300,200,40);
+//		bright.setBounds(pause_width/4,250,200,40);
+//
+//		vol.setBounds(60,300,40,40);
+//		tone.setBounds(60,250,40,40);
+//
+//		pause.setSize(pause_width,pause_height);
+//		pause.add(restartBtn);
+//		pause.add(tempBtn);
+//		pause.add(vol);
+//		pause.add(tone);
+//		pause.add(sound);
+//		pause.add(bright);
+//
+//		Core.frame.add(pause);
+//
+//		configFrame.add(pause);
+//		configFrame.setSize(pause_width,pause_height);
+//		configFrame.setVisible(true);
+	}
+
+	private void gamestart(){
+		System.out.println("restart");
 	}
 
 	/**
@@ -338,4 +523,6 @@ public class GameScreen extends Screen {
 		return new GameState(this.level, this.score, this.lives,
 				this.bulletsShot, this.shipsDestroyed);
 	}
+
+
 }

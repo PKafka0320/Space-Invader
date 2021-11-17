@@ -141,8 +141,8 @@ public final class FileManager {
 		BufferedReader reader = null;
 
 		try {
-			inputStream = FileManager.class.getClassLoader()
-					.getResourceAsStream("scores");
+			//DrawManager.class.getResourceAsStream("graphics");
+			inputStream = FileManager.class.getResourceAsStream("scores");
 			reader = new BufferedReader(new InputStreamReader(inputStream));
 
 			Score highScore = null;
