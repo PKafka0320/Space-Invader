@@ -1,22 +1,19 @@
-[INFO|1:34:42]: Started loading resources. 
-[FINE|1:34:42]: Sprite Ship loaded. 
-[FINE|1:34:42]: Sprite ShipDestroyed loaded. 
-[FINE|1:34:42]: Sprite Bullet loaded. 
-[FINE|1:34:42]: Sprite EnemyBullet loaded. 
-[FINE|1:34:42]: Sprite EnemyShipA1 loaded. 
-[FINE|1:34:42]: Sprite EnemyShipA2 loaded. 
-[FINE|1:34:42]: Sprite EnemyShipB1 loaded. 
-[FINE|1:34:42]: Sprite EnemyShipB2 loaded. 
-[FINE|1:34:42]: Sprite EnemyShipC1 loaded. 
-[FINE|1:34:42]: Sprite EnemyShipC2 loaded. 
-[FINE|1:34:42]: Sprite EnemyShipSpecial loaded. 
-[FINE|1:34:42]: Sprite Explosion loaded. 
-[INFO|1:34:42]: Finished loading the sprites. 
-[INFO|1:34:42]: Finished loading the fonts. 
-[INFO|1:34:42]: Starting 448x550 title screen at 60 fps. 
-[INFO|1:34:43]: Closing title screen. 
-[INFO|1:34:43]: Starting 448x550 game screen at 60 fps. 
-[INFO|1:34:43]: Initializing 5x4 ship formation in (20,100) 
-[INFO|1:34:54]: Destroyed ship in (3,3) 
-[INFO|1:34:56]: Removed enemy 3 from column 3 
-[INFO|1:34:56]: Destroyed ship in (2,3) 
+[INFO|2:02:31]: Started loading resources. 
+[FINE|2:02:31]: Sprite Ship loaded. 
+[FINE|2:02:31]: Sprite ShipDestroyed loaded. 
+[FINE|2:02:31]: Sprite Bullet loaded. 
+[FINE|2:02:31]: Sprite EnemyBullet loaded. 
+[FINE|2:02:31]: Sprite EnemyShipA1 loaded. 
+[FINE|2:02:31]: Sprite EnemyShipA2 loaded. 
+[FINE|2:02:31]: Sprite EnemyShipB1 loaded. 
+[FINE|2:02:31]: Sprite EnemyShipB2 loaded. 
+[FINE|2:02:31]: Sprite EnemyShipC1 loaded. 
+[FINE|2:02:31]: Sprite EnemyShipC2 loaded. 
+[FINE|2:02:31]: Sprite EnemyShipSpecial loaded. 
+[FINE|2:02:31]: Sprite Explosion loaded. 
+[INFO|2:02:31]: Finished loading the sprites. 
+[INFO|2:02:31]: Finished loading the fonts. 
+[INFO|2:02:31]: Starting 448x550 title screen at 60 fps. 
+[INFO|2:02:39]: Closing title screen. 
+[INFO|2:02:39]: Starting 448x550 game screen at 60 fps. 
+[INFO|2:02:39]: Initializing 5x4 ship formation in (20,100) 
