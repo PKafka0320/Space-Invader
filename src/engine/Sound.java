@@ -1,10 +1,8 @@
 package engine;
 
-
-
 public class Sound {
     // constructor
-    public Sound() {
+    public Sound(String mode) {
 
     }
 
