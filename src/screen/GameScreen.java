@@ -221,10 +221,10 @@ public class GameScreen extends Screen{
 						isBtnDown = true;
 						valueUp();
 					}
-					if (inputManager.isKeyUp(KeyEvent.VK_UP) || inputManager.isKeyUp(KeyEvent.VK_DOWN)
-							|| inputManager.isKeyUp(KeyEvent.VK_LEFT) || inputManager.isKeyUp(KeyEvent.VK_RIGHT)) {
-						isBtnDown = false;
-					}
+				}
+				if (inputManager.isKeyUp(KeyEvent.VK_UP) && inputManager.isKeyUp(KeyEvent.VK_DOWN)
+						&& inputManager.isKeyUp(KeyEvent.VK_LEFT) && inputManager.isKeyUp(KeyEvent.VK_RIGHT)) {
+					isBtnDown = false;
 				}
 
 				if (moveRight && !isRightBorder && !paused) {
