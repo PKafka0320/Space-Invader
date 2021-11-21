@@ -86,7 +86,7 @@ public class GameScreen extends Screen{
 	private static int pause_width = 300;
 	private static int pause_height = 420;
 
-	public static int bright = 50;
+	public static int bright = 0;
 	public static int sound = 50;
 
 	private boolean isBtnDown = false;
@@ -196,10 +196,8 @@ public class GameScreen extends Screen{
 					pausebutton = true;
 					if (!paused) {
 						paused = true;
-						gamepaused();
 					} else {
 						paused = false;
-						gamestart();
 					}
 				}
 				if (pausebutton && inputManager.isKeyUp(KeyEvent.VK_ESCAPE)) {
@@ -382,57 +380,16 @@ public class GameScreen extends Screen{
 					/ 12);
 		}
 
+		drawManager.backBlack(this, bright);
+
 		drawManager.completeDrawing(this);
 	}
 
 	private void drawConfig() {
 		drawManager.initDrawing(this);
 		drawManager.drawConfigScreen(this,width-100, sound, bright, selectedConfig);
+		drawManager.backBlack(this, bright);
 		drawManager.completeDrawing(this);
-	}
-
-	private void gamepaused() {
-		System.out.println("paused");
-
-		//코어에 함수를 불러오는 거야
-//
-//		JFrame configFrame = new JFrame();
-//		JPanel pause = new JPanel();
-//		JSlider sound = new JSlider();
-//		JSlider bright = new JSlider();
-//		JButton restartBtn = new JButton("restart");
-//		JButton tempBtn = new JButton("temporary");
-//		JLabel vol = new JLabel("vol");
-//		JLabel tone = new JLabel("ton");
-//		setVisible(true);
-//		pause.setLayout(null);
-//
-//		restartBtn.setBounds(pause_width/4,150,150,50);
-//		tempBtn.setBounds(pause_width/4,100,150,50);
-//
-//		sound.setBounds(pause_width/4,300,200,40);
-//		bright.setBounds(pause_width/4,250,200,40);
-//
-//		vol.setBounds(60,300,40,40);
-//		tone.setBounds(60,250,40,40);
-//
-//		pause.setSize(pause_width,pause_height);
-//		pause.add(restartBtn);
-//		pause.add(tempBtn);
-//		pause.add(vol);
-//		pause.add(tone);
-//		pause.add(sound);
-//		pause.add(bright);
-//
-//		Core.frame.add(pause);
-//
-//		configFrame.add(pause);
-//		configFrame.setSize(pause_width,pause_height);
-//		configFrame.setVisible(true);
-	}
-
-	private void gamestart(){
-		System.out.println("restart");
 	}
 
 	/**

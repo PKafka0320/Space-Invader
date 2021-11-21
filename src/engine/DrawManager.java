@@ -2,22 +2,19 @@ package engine;
 
 import screen.GameScreen;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.swing.*;
-import java.awt.*;
 
-import screen.GameScreen;
+//<<<<<<< HEAD
 import screen.Screen;
+//=======
+import screen.*;
+//>>>>>>> 5e3d9b09160ce919d2dd8623e87c03e7abc408be
 import entity.Entity;
 import entity.Ship;
 
@@ -51,9 +48,10 @@ public final class DrawManager {
 	private static Font fontBig;
 	/** Big sized font properties. */
 	private static FontMetrics fontBigMetrics;
-
+	private AlphaComposite alphaComposite;
 	/** Sprite types mapped to their images. */
 	private static Map<SpriteType, boolean[][]> spriteMap;
+
 
 	/** Sprite types. */
 	public static enum SpriteType {
@@ -161,6 +159,14 @@ public final class DrawManager {
 		backBufferGraphics
 				.fillRect(0, 0, screen.getWidth(), screen.getHeight());
 
+		if (!(screen instanceof HighScoreScreen ||
+				screen instanceof ScoreScreen)) {
+			Particles particles = new Particles();
+			for (int i = 0; i <= 120; i++) {
+				particles.add(new Particle(this, screen));
+			}
+			particles.draw(backBufferGraphics);
+		}
 
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
@@ -554,23 +560,23 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.GREEN);
 			backBufferGraphics.drawString("sound",120,250);
 			i_sound = GameScreen.sound;
-			backBufferGraphics.drawString(""+i_sound,200,250);
+			backBufferGraphics.drawString(""+i_sound,250,250);
 
 			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawString("bright",120,290);
+			backBufferGraphics.drawString("contrast",120,290);
 			i_bright = GameScreen.bright;
-			backBufferGraphics.drawString(""+i_bright,200,290);
+			backBufferGraphics.drawString(""+i_bright,250,290);
 		}
 		else if (option == 1) {
 			backBufferGraphics.setColor(Color.WHITE);
 			backBufferGraphics.drawString("sound",120,250);
 			i_sound = GameScreen.sound;
-			backBufferGraphics.drawString(""+i_sound,200,250);
+			backBufferGraphics.drawString(""+i_sound,250,250);
 
 			backBufferGraphics.setColor(Color.GREEN);
-			backBufferGraphics.drawString("bright",120,290);
+			backBufferGraphics.drawString("contrast",120,290);
 			i_bright = GameScreen.bright;
-			backBufferGraphics.drawString(""+i_bright,200,290);
+			backBufferGraphics.drawString(""+i_bright,250,290);
 		}
 	}
 
@@ -611,5 +617,18 @@ public final class DrawManager {
 		else
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
+	}
+
+	public BufferedImage getBackBuffer() {
+		return backBuffer;
+	}
+
+	public static void backBlack(Screen screen, int alpha) {
+		backBufferGraphics.setColor(Color.black);
+		Graphics2D g2 = (Graphics2D)backBufferGraphics;
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float)alpha/100));
+		g2.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+
+
 	}
 }
