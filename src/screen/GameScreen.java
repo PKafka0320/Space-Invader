@@ -19,6 +19,8 @@ import entity.EnemyShipFormation;
 import entity.Entity;
 import entity.Ship;
 
+import engine.Sound;
+
 /**
  * Implements the game screen, where the action happens.
  * 
@@ -92,6 +94,7 @@ public class GameScreen extends Screen{
 	private boolean isBtnDown = false;
 	private static int selectedConfig = 0;
 
+	public static Sound sd;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -111,7 +114,7 @@ public class GameScreen extends Screen{
 	 */
 	public GameScreen(final GameState gameState,
 			final GameSettings gameSettings, final boolean bonusLife,
-			final int width, final int height, final int fps) {
+			final int width, final int height, final int fps, Sound sd) {
 		super(width, height, fps);
 
 //		game_thread = new MainScreen(gameState, gameSettings,bonusLife,width,height,fps);
@@ -121,6 +124,8 @@ public class GameScreen extends Screen{
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
 		this.lives = gameState.getLivesRemaining();
+
+		this.sd = sd;
 
 		File file = new File("src/engine/config.png");
 		try{
@@ -306,6 +311,7 @@ public class GameScreen extends Screen{
 		if (selectedConfig == 0) {
 			if (sound >= 0 && sound <= 95) {
 				sound += 5;
+				sd.setVolume(sound / 100.0f);
 			}
 		}
 		else if (selectedConfig == 1) {
@@ -320,9 +326,11 @@ public class GameScreen extends Screen{
 			if (sound >= 5 && sound <= 100) {
 				if(sound == 0) {
 					sound -= 0;
+					sd.setVolume(0.0f);
 				}
 				else {
 					sound -= 5;
+					sd.setVolume(sound / 100.0f);
 				}
 
 			}

@@ -48,7 +48,6 @@ public final class DrawManager {
 	private static Font fontBig;
 	/** Big sized font properties. */
 	private static FontMetrics fontBigMetrics;
-	private AlphaComposite alphaComposite;
 	/** Sprite types mapped to their images. */
 	private static Map<SpriteType, boolean[][]> spriteMap;
 
@@ -628,7 +627,5 @@ public final class DrawManager {
 		Graphics2D g2 = (Graphics2D)backBufferGraphics;
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float)alpha/100));
 		g2.fillRect(0, 0, screen.getWidth(), screen.getHeight());
-
-
 	}
 }

@@ -72,7 +72,7 @@ public final class Core {
 	/** Logger handler for printing to console. */
 	private static ConsoleHandler consoleHandler;
 
-	private static Thread main_thread;
+	private static Sound Sound;
 
 
 
@@ -126,6 +126,8 @@ public final class Core {
 			switch (returnCode) {
 			case 1:
 				// Main menu.
+				Sound = new Sound(engine.Sound.MAIN);
+				Sound.playMusic(true);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
@@ -134,16 +136,18 @@ public final class Core {
 				break;
 			case 2:
 				// Game & score.
-
+				Sound.stop();
 				do {
 					// One extra live every few levels.
+					Sound = new Sound(engine.Sound.STAGE2);
+					Sound.playMusic(true);
 					boolean bonusLife = gameState.getLevel()
 						% EXTRA_LIFE_FRECUENCY == 0
 						&& gameState.getLivesRemaining() < MAX_LIVES;
 
 					currentScreen = new GameScreen(gameState,
 						gameSettings.get(gameState.getLevel() - 1),
-						bonusLife, width, height, FPS);
+						bonusLife, width, height, FPS, Sound);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " game screen at " + FPS + " fps.");
 					frame.setScreen(currentScreen);
@@ -159,6 +163,10 @@ public final class Core {
 
 				} while (gameState.getLivesRemaining() > 0
 					&& gameState.getLevel() <= NUM_LEVELS);
+
+				Sound.stop();
+				Sound = new Sound(engine.Sound.GAMEOVER);
+				Sound.playMusic(false);
 
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 					+ " score screen at " + FPS + " fps, with a score of "
