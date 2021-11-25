@@ -628,4 +628,9 @@ public final class DrawManager {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float)alpha/100));
 		g2.fillRect(0, 0, screen.getWidth(), screen.getHeight());
 	}
+
+	public void drawPowerUps(Screen screen, String power) {
+		backBufferGraphics.setColor(Color.yellow);
+		backBufferGraphics.drawString(power, 30, screen.getHeight()-50);
+	}
 }

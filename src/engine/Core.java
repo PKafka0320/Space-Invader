@@ -1,5 +1,7 @@
 package engine;
 
+import entity.Ship;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
@@ -145,6 +147,16 @@ public final class Core {
 						% EXTRA_LIFE_FRECUENCY == 0
 						&& gameState.getLivesRemaining() < MAX_LIVES;
 
+					switch (gameState.getLevel()){
+						case 2: // 공격속도 업그레이드
+							Ship.setbullet_Speed(-10);
+
+							break;
+						case 3:  // 이동속도
+							Ship.setSpeed(6);
+							break;
+
+					}
 					currentScreen = new GameScreen(gameState,
 						gameSettings.get(gameState.getLevel() - 1),
 						bonusLife, width, height, FPS, Sound);

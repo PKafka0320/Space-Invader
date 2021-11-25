@@ -18,9 +18,9 @@ public class Ship extends Entity {
 	/** Time between shots. */
 	private static final int SHOOTING_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship. */
-	private static final int BULLET_SPEED = -6;
+	private static int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time. */
-	private static final int SPEED = 2;
+	private static int SPEED = 2;
 	
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
@@ -110,4 +110,6 @@ public class Ship extends Entity {
 	public final int getSpeed() {
 		return SPEED;
 	}
+	public final static int setSpeed(int speed) {return SPEED = speed;}
+	public final static int setbullet_Speed(int speed) {return BULLET_SPEED = speed;}
 }

@@ -1,9 +1,7 @@
 package screen;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashSet;
@@ -77,13 +75,9 @@ public class GameScreen extends Screen{
 	private boolean bonusLife;
 
 	private static BufferedImage config;
-	private static Image resizeImage;
-	private static Image image;
 	private boolean pausebutton = false;
 
 	private boolean paused = false;
-	private static Thread game_thread;
-	private static Thread paused_thread;
 
 	private static int pause_width = 300;
 	private static int pause_height = 420;
@@ -386,12 +380,19 @@ public class GameScreen extends Screen{
 					/ 12);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height
 					/ 12);
+			if (this.level == 2){
+				drawManager.drawPowerUps(this, "BULLET SPEED UP!");
+			}
+			if (this.level == 3){
+				drawManager.drawPowerUps(this, "SPEED UP!");
+			}
 		}
 
 		drawManager.backBlack(this, bright);
 
 		drawManager.completeDrawing(this);
 	}
+
 
 	private void drawConfig() {
 		drawManager.initDrawing(this);
