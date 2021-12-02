@@ -217,6 +217,18 @@ public final class DrawManager {
 							+ j * 2, 1, 1);
 	}
 
+	public void drawBoss(final Entity entity, final int positionX,
+						   final int positionY) {
+		boolean[][] image = spriteMap.get(entity.getSpriteType());
+
+		backBufferGraphics.setColor(entity.getColor());
+		for (int i = 0; i < image.length; i++)
+			for (int j = 0; j < image[i].length; j++)
+				if (image[i][j])
+					backBufferGraphics.fillRect(positionX + i * 20, positionY
+							+ j * 20, 20, 20);
+	}
+
 	/**
 	 * For debugging purpouses, draws the canvas borders.
 	 *
@@ -625,6 +637,33 @@ public final class DrawManager {
 					screen.getHeight() / 2 + fontBigMetrics.getHeight() / 3);
 		else
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
+					+ fontBigMetrics.getHeight() / 3);
+	}
+
+	public void drawBossCountDown(final Screen screen, final int level,
+							  final int number, final boolean bonusLife) {
+		int rectWidth = screen.getWidth();
+		int rectHeight = screen.getHeight() / 6;
+		backBufferGraphics.setColor(Color.BLACK);
+		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2,
+				rectWidth, rectHeight);
+		backBufferGraphics.setColor(Color.GREEN);
+		if (number >= 4)
+			if (!bonusLife) {
+				drawCenteredBigString(screen, "Level " + level,
+						screen.getHeight() / 2
+								+ fontBigMetrics.getHeight() / 3);
+			} else {
+				drawCenteredBigString(screen, "Level " + level
+								+ " - Bonus life!",
+						screen.getHeight() / 2
+								+ fontBigMetrics.getHeight() / 3);
+			}
+		else if (number != 0)
+			drawCenteredBigString(screen, Integer.toString(number),
+					screen.getHeight() / 2 + fontBigMetrics.getHeight() / 3);
+		else
+			drawCenteredBigString(screen, "BOSS EMERGING!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
 	}
 

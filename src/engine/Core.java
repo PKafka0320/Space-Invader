@@ -1,6 +1,8 @@
 package engine;
 
+import entity.Boss;
 import entity.Ship;
+import screen.BossScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import screen.BossScreen;
 import screen.GameScreen;
 import screen.HighScoreScreen;
 import screen.ScoreScreen;
@@ -59,6 +62,8 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500);
+	private static final GameSettings BOSS =
+			new GameSettings(8, 7, 2, 300);
 	
 	/** Frame to draw the screen on. */
 	public static Frame frame;
@@ -112,13 +117,14 @@ public final class Core {
 
 		gameSettings = new ArrayList<GameSettings>();
 		gameSettings.add(SETTINGS_LEVEL_1);
+		gameSettings.add(BOSS);
 		gameSettings.add(SETTINGS_LEVEL_2);
 		gameSettings.add(SETTINGS_LEVEL_3);
 		gameSettings.add(SETTINGS_LEVEL_4);
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
-		
+
 		GameState gameState;
 
 		int returnCode = 1;
@@ -157,15 +163,23 @@ public final class Core {
 							break;
 
 					}
-					currentScreen = new GameScreen(gameState,
-						gameSettings.get(gameState.getLevel() - 1),
-						bonusLife, width, height, FPS, Sound);
+					if (gameState.getLevel() == 2) {
+						currentScreen = new BossScreen(gameState,
+								gameSettings.get(gameState.getLevel() - 1),
+								bonusLife, width, height, FPS, Sound);
+						gameState = ((BossScreen) currentScreen).getGameState();
+					} else {
+						currentScreen = new GameScreen(gameState,
+								gameSettings.get(gameState.getLevel() - 1),
+								bonusLife, width, height, FPS, Sound);
+						gameState = ((GameScreen) currentScreen).getGameState();
+					}
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " game screen at " + FPS + " fps.");
 					frame.setScreen(currentScreen);
 					LOGGER.info("Closing game screen.");
 
-					gameState = ((GameScreen) currentScreen).getGameState();
+
 
 					gameState = new GameState(gameState.getLevel() + 1,
 						gameState.getScore(),
