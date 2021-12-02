@@ -50,6 +50,7 @@ public final class DrawManager {
 	private static FontMetrics fontBigMetrics;
 	/** Sprite types mapped to their images. */
 	private static Map<SpriteType, boolean[][]> spriteMap;
+	private static Particles particles;
 
 
 	/** Sprite types. */
@@ -83,7 +84,7 @@ public final class DrawManager {
 	/**
 	 * Private constructor.
 	 */
-	private DrawManager() {
+	public DrawManager() {
 		fileManager = Core.getFileManager();
 		logger = Core.getLogger();
 		logger.info("Started loading resources.");
@@ -140,6 +141,15 @@ public final class DrawManager {
 		frame = currentFrame;
 	}
 
+	public Particles getParticles() {
+		return particles;
+	}
+
+	public void addParticle(Particles particles, Particle particle) {
+		for (int i=0; i<=120; i++)
+			particles.add(particle);
+	}
+
 	/**
 	 * First part of the drawing process. Initialices buffers, draws the
 	 * background and prepares the images.
@@ -160,7 +170,7 @@ public final class DrawManager {
 
 		if (!(screen instanceof HighScoreScreen ||
 				screen instanceof ScoreScreen)) {
-			Particles particles = new Particles();
+			particles = new Particles();
 			for (int i = 0; i <= 120; i++) {
 				particles.add(new Particle(this, screen));
 			}

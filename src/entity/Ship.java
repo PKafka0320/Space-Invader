@@ -110,6 +110,9 @@ public class Ship extends Entity {
 	public final int getSpeed() {
 		return SPEED;
 	}
+	public final int getBulletSpeed() {
+		return BULLET_SPEED;
+	}
 	public final static int setSpeed(int speed) {return SPEED = speed;}
 	public final static int setbullet_Speed(int speed) {return BULLET_SPEED = speed;}
 }
